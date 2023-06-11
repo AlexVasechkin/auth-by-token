@@ -2,7 +2,7 @@
 
 namespace Avn\Security\AuthByToken\Contracts;
 
-interface HandleSuccefullTokenValidation
+interface HandleSuccefullTokenValidationInterface
 {
     public function handle(TokenDataInterface $tokenData, array $payload): void;
 }

@@ -2,7 +2,7 @@
 
 namespace Avn\Security\AuthByToken;
 
-use Avn\Security\AuthByToken\Contracts\HandleSuccefullTokenValidation;
+use Avn\Security\AuthByToken\Contracts\HandleSuccefullTokenValidationInterface;
 use Avn\Security\AuthByToken\DTO\AuthTokenData;
 use Exception;
 use Psr\Cache\CacheItemPoolInterface;
@@ -17,7 +17,7 @@ class ValidateTokenAction
         $this->cacheItemPool = $cacheItemPool;
     }
 
-    public function execute(string $token, HandleSuccefullTokenValidation $handleSuccess): void
+    public function execute(string $token, HandleSuccefullTokenValidationInterface $handleSuccess): void
     {
         $getPayload = function (string $token) {
             [, $payloadPart] = explode('.', $token);
