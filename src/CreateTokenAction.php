@@ -30,7 +30,7 @@ class CreateTokenAction
 
     private function getTokenFromCache(string $userIdentifier, string $hash): array
     {
-        $item = $this->cacheItemPool->getItem(sprintf($_ENV[''] . '%s', $userIdentifier));
+        $item = $this->cacheItemPool->getItem(sprintf(($_ENV[ConstProvider::ENV_CACHE_PREFIX_KEY] ?? ConstProvider::DEFAULT_CACHE_PREFIX) . '%s', $userIdentifier));
 
         if (!$item->isHit()) {
             $item->set([

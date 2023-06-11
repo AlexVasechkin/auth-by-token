@@ -30,7 +30,7 @@ class ValidateTokenAction
             throw new Exception('sub: expected string.');
         }
 
-        $cacheItem = $this->cacheItemPool->getItem(sprintf('auth-token_%s', $payload['sub']));
+        $cacheItem = $this->cacheItemPool->getItem(sprintf(($_ENV[ConstProvider::ENV_CACHE_PREFIX_KEY] ?? ConstProvider::DEFAULT_CACHE_PREFIX) . '%s', $payload['sub']));
 
         if (!$cacheItem->isHit()) {
             throw new Exception('Token not found!');
@@ -46,6 +46,6 @@ class ValidateTokenAction
 
         $handleSuccess->handle(new AuthTokenData($tokenData['value'] ?? null, $tokenData['hash'] ?? null), $payload);
 
-        $this->cacheItemPool->deleteItem(sprintf('auth-token_%s', $payload['sub']));
+        $this->cacheItemPool->deleteItem(sprintf(($_ENV[ConstProvider::ENV_CACHE_PREFIX_KEY] ?? ConstProvider::DEFAULT_CACHE_PREFIX) . '%s', $payload['sub']));
     }
 }
