@@ -2,7 +2,6 @@
 
 namespace Avn\Security\AuthByToken;
 
-use Avn\Security\AuthByToken\Contracts\HandleSuccefullTokenValidationInterface;
 use Avn\Security\AuthByToken\DTO\AuthTokenData;
 use Exception;
 use Psr\Cache\CacheItemPoolInterface;
@@ -17,7 +16,7 @@ class ValidateTokenAction
         $this->cacheItemPool = $cacheItemPool;
     }
 
-    public function execute(string $token, HandleSuccefullTokenValidationInterface $handleSuccess): void
+    public function execute(string $token, callable $handleSuccess): void
     {
         $getPayload = function (string $token) {
             [, $payloadPart] = explode('.', $token);
@@ -44,7 +43,7 @@ class ValidateTokenAction
 
         JWT\JWT::decode($token, new JWT\Key($tokenData['value'], 'HS512'));
 
-        $handleSuccess->handle(new AuthTokenData($tokenData['value'] ?? null, $tokenData['hash'] ?? null), $payload);
+        $handleSuccess(new AuthTokenData($tokenData['value'] ?? null, $tokenData['hash'] ?? null), $payload);
 
         $this->cacheItemPool->deleteItem(sprintf(($_ENV[ConstProvider::ENV_CACHE_PREFIX_KEY] ?? ConstProvider::DEFAULT_CACHE_PREFIX) . '%s', $payload['sub']));
     }

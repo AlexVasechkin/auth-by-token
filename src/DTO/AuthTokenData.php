@@ -2,10 +2,7 @@
 
 namespace Avn\Security\AuthByToken\DTO;
 
-use Avn\Security\AuthByToken\Contracts\TokenDataInterface;
-
 class AuthTokenData
-    implements TokenDataInterface
 {
     private string $value;
 
